@@ -1,28 +1,22 @@
 from flask import Flask, render_template, request, jsonify
 
-import json
+import sqlite3
 
 from datetime import datetime
 
-app = flask(__name__)
+app = Flask(__name__)
 
-BLOG_POST_FILE = "blog_post.json"
-
-def load_blog_posts():
-    try:
-        with open(BLOG_POST_FILE, "r") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-    
-def save_blog_posts(posts):
-    with open(BLOG_POST_FILE, "w") as file:
-        json.dump(posts, file, indent= 4)
+def get_db_connection():
+    conn = sqlite3.connect("blog.db")
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
 @app.route("/")
 def index():
-    posts = load_blog_posts()
+    conn = get_db_connection()
+    posts = conn.execute("SELECT * FROM blog_posts ORDER BY date DESC").fetchall()
+    conn.close()
     return render_template("index.html", posts=posts)
 
 @app.route("/add", methods=["GET", "POST"])
@@ -33,22 +27,16 @@ def add_post():
         author = request.form["author"]
         date = datetime.now().strftime("%d-%m-%Y %H:%M")
 
-        posts = load_blog_posts()
-
-        new_post = {
-            "title": title,
-            "content": content,
-            "author": author,
-            "date": date
-        }
-
-        posts.append(new_post)
-
-        save_blog_posts(posts)
+        conn = get_db_connection()
+        conn.execute("INSERT INTO blog_posts (title, author, date, content) VALUES (?, ?, ?, ?)",
+                        (title, author, date, content))
+        conn.commit()
+        conn.close()
 
         return jsonify({"message": "Blog post added successfully!"}), 201
+
     
-    return render_template("add_post.html")
+    return render_template("add_posts.html")
 
 if __name__ == "__main__":
     app.run()
