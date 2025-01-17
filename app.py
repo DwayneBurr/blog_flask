@@ -1,4 +1,10 @@
-from flask import Flask, render_template, request, jsonify
+from flask import (
+    Flask, 
+    render_template, 
+    request,
+     jsonify, 
+    redirect, 
+    )
 
 import sqlite3
 
@@ -25,7 +31,7 @@ def add_post():
         title = request.form["title"]
         content = request.form["content"]
         author = request.form["author"]
-        date = datetime.now().strftime("%d-%m-%Y %H:%M")
+        date = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
         conn = get_db_connection()
         conn.execute("INSERT INTO blog_posts (title, author, date, content) VALUES (?, ?, ?, ?)",
@@ -37,6 +43,22 @@ def add_post():
 
     
     return render_template("add_posts.html")
+
+@app.route("/delete/<int:id>",methods=["GET"])
+def delete_post(id):
+    
+    conn = get_db_connection()
+    post = conn.execute("SELECT * FROM blog_posts WHERE id = ?", (id,)).fetchone()
+
+    if post is None:
+        return redirect("/")
+
+    conn.execute("DELETE FROM blog_posts WHERE id = ?", (id,))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run()
