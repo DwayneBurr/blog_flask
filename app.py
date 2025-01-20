@@ -32,7 +32,7 @@ def load_user(user_id):
     return None
 
 def get_db_connection():
-    db_path = '/home/bookinbinness/mysite/blog_flask/blog.db'
+    db_path = 'blog.db'
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
