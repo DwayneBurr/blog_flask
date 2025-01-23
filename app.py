@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import sqlite3
 import os
@@ -32,8 +33,7 @@ def load_user(user_id):
     return None
 
 def get_db_connection():
-    db_path = 'blog.db'
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(os.path.join(os.getcwd(), 'blog.db'))  # Ensure the full path is used
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -66,9 +66,20 @@ def dashboard():
 @app.route("/")
 def index():
     conn = get_db_connection()
-    posts = conn.execute("SELECT * FROM blog_posts ORDER BY date DESC").fetchall()
+    posts = conn.execute("SELECT * FROM blog_posts ORDER BY date DESC").fetchall()  # Corrected query
+
     conn.close()
     return render_template("index.html", posts=posts)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'avi', 'mov'}
+
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
 @app.route("/add", methods=["GET", "POST"])
 @login_required
@@ -79,9 +90,27 @@ def add_post():
         author = request.form["author"]
         date = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
+        image_filename = None
+        video_filename = None
+
+        if 'image' in request.files:
+            image = request.files['image']
+            if image and allowed_file(image.filename):
+                image_filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+
+        if 'video' in request.files:
+            video = request.files['video']
+            if video and allowed_file(video.filename):
+                video_filename = secure_filename(video.filename)
+                video.save(os.path.join(app.config['UPLOAD_FOLDER'], video_filename))
+
         conn = get_db_connection()
-        conn.execute("INSERT INTO blog_posts (title, author, date, content) VALUES (?, ?, ?, ?)",
-                        (title, author, date, content))
+        conn.execute("""
+            INSERT INTO blog_posts (title, author, date, content, image, video) 
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (title, author, date, content, image_filename, video_filename))
+
         conn.commit()
         conn.close()
 
