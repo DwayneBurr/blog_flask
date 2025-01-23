@@ -5,8 +5,11 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import sqlite3
 import os
+from image_upload import image_upload
 
 from datetime import datetime
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 load_dotenv()
 
@@ -33,9 +36,10 @@ def load_user(user_id):
     return None
 
 def get_db_connection():
-    conn = sqlite3.connect("blog.db")
+    conn = sqlite3.connect(os.path.join(os.getcwd(), 'blog.db'))  # Ensure the full path is used
     conn.row_factory = sqlite3.Row
     return conn
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -65,7 +69,8 @@ def dashboard():
 @app.route("/")
 def index():
     conn = get_db_connection()
-    posts = conn.execute("SELECT * FROM blog_posts ORDER BY date DESC").fetchall()
+    posts = conn.execute("SELECT * FROM blog_posts ORDER BY date DESC").fetchall()  # Corrected query
+
     conn.close()
     return render_template("index.html", posts=posts)
 
@@ -75,6 +80,9 @@ def allowed_file(filename):
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'avi', 'mov'}
+
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
 @app.route("/add", methods=["GET", "POST"])
 @login_required

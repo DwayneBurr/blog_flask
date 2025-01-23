@@ -14,7 +14,6 @@
                 <p><strong>Author:</strong> {{ post.author }} | <strong>Date:</strong> {{ post.date }}</p>
                 <p>{{ post.content }}</p>
                 
-                <!-- Check if the post has an image -->
                 {% if post.image %}
                     <img src="{{ url_for('static', filename='uploads/' + post.image) }}" alt="Post Image" style="max-width: 100%; height: auto;">
                 {% endif %}
