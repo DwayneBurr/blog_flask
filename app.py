@@ -107,9 +107,9 @@ def add_post():
 
         conn = get_db_connection()
         conn.execute("""
-            INSERT INTO blog_posts (title, author, date, content, image, video) 
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (title, author, date, content, image_filename, video_filename))
+            INSERT INTO blog_posts (title, author, date, content) 
+            VALUES (?, ?, ?, ?)
+        """, (title, author, date, content))
 
         conn.commit()
         conn.close()

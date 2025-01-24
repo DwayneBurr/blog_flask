@@ -16,8 +16,32 @@
             </li>
         {% endfor %}
     </ul>
-    <script src="//code.tidio.co/ycqp5knskjlnc6w4ckkzxbebgavlbvuk.js" async></script>
-    <script src="https://code.tidio.co/ycqp5knskjlnc6w4ckkzxbebgavlbvuk.js" async></script>
+    <!-- <script src="https://code.tidio.co/ycqp5knskjlnc6w4ckkzxbebgavlbvuk.js" async></script> -->
+    <script src='https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js'></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", function() {
+        window.AgentInitializer.init({
+          agentRenderURL: "https://agent.jotform.com/019493dd788b7ab48aa8953c98fad501582a",
+          rootId: "JotformAgent-019493dd788b7ab48aa8953c98fad501582a",
+          formID: "019493dd788b7ab48aa8953c98fad501582a",
+          queryParams: ["skipWelcome=1", "maximizable=1"],
+          domain: "https://www.jotform.com",
+          isInitialOpen: false,
+          isDraggable: false,
+          background: "linear-gradient(180deg, #FFDF79 0%, #FFDF79 100%)",
+          buttonBackgroundColor: "#FB7041",
+          buttonIconColor: "#FFF",
+          variant: false,
+          customizations: {
+            "greeting": "Yes",
+            "greetingMessage": "Hi! How can I assist you?",
+            "pulse": "Yes",
+            "position": "right"
+          },
+          isVoice: undefined
+        });
+      });
+    </script>
 
 </body>
 </html>
