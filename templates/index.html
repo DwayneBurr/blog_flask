@@ -18,30 +18,23 @@
     </ul>
     <!-- <script src="https://code.tidio.co/ycqp5knskjlnc6w4ckkzxbebgavlbvuk.js" async></script> -->
     <script src='https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js'></script>
-    <script>
-      window.addEventListener("DOMContentLoaded", function() {
-        window.AgentInitializer.init({
-          agentRenderURL: "https://agent.jotform.com/019493dd788b7ab48aa8953c98fad501582a",
-          rootId: "JotformAgent-019493dd788b7ab48aa8953c98fad501582a",
-          formID: "019493dd788b7ab48aa8953c98fad501582a",
-          queryParams: ["skipWelcome=1", "maximizable=1"],
-          domain: "https://www.jotform.com",
-          isInitialOpen: false,
-          isDraggable: false,
-          background: "linear-gradient(180deg, #FFDF79 0%, #FFDF79 100%)",
-          buttonBackgroundColor: "#FB7041",
-          buttonIconColor: "#FFF",
-          variant: false,
-          customizations: {
-            "greeting": "Yes",
-            "greetingMessage": "Hi! How can I assist you?",
-            "pulse": "Yes",
-            "position": "right"
-          },
-          isVoice: undefined
-        });
-      });
-    </script>
+    <iframe id="JotFormIFrame-0194967a4b7872c8a0968a3a0b51b0d58368" title="Mia: Customer Support Agent"
+    onload="window.parent.scrollTo(0,0)" allowtransparency="true"
+    allow="geolocation; microphone; camera; fullscreen"
+    src="https://agent.jotform.com/0194967a4b7872c8a0968a3a0b51b0d58368?embedMode=iframe&background=1&shadow=1"
+    frameborder="0" style="
+      min-width:100%;
+      max-width:100%;
+      height:688px;
+      border:none;
+      width:100%;
+    " scrolling="no">
+  </iframe>
+  <script src='https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'></script>
+  <script>
+    window.jotformEmbedHandler("iframe[id='JotFormIFrame-0194967a4b7872c8a0968a3a0b51b0d58368']",
+      "https://www.jotform.com")
+  </script>
 
 </body>
 </html>
