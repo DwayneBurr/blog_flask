@@ -1,0 +1,27 @@
+h1#author-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.12em;
+}
+
+li {
+    list-style: none;
+}
+
+li h2 {
+    color: red;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+p.title-date {
+    color: rgb(90, 90, 90);
+    font-size: 0.8em;
+}
+
+.content {
+    letter-spacing: 0.08em;
+}
+

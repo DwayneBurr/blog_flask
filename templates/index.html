@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>My Blog</title>
 </head>
 <body>
-    <h1>My Blog</h1>
+    <h1 id="author-title">My Blog</h1>
     <ul>
         {% for post in posts %}
             <li>
                 <h2>{{ post.title }}</h2>
-                <p><strong>Author:</strong> {{ post.author }} | <strong>Date:</strong> {{ post.date }}</p>
-                <p>{{ post.content }}</p>
+                <p class="title-date"><strong>Author:</strong> {{ post.author }} | <strong>Date:</strong> {{ post.date }}</p>
+                <p class="content">{{ post.content }}</p>
             </li>
         {% endfor %}
     </ul>
 
-    <!-- <script src="https://code.tidio.co/ycqp5knskjlnc6w4ckkzxbebgavlbvuk.js" async></script> -->
-    <script id="messenger-widget-b" src="https://cdn.botpenguin.com/website-bot.js" defer>67a36382fced4169875d8e9a,67a36019621d3a97501b94ac</script>
+    <script src="https://code.tidio.co/ycqp5knskjlnc6w4ckkzxbebgavlbvuk.js" async></script>
+    <!-- <script id="messenger-widget-b" src="https://cdn.botpenguin.com/website-bot.js" defer>67a36382fced4169875d8e9a,67a36019621d3a97501b94ac</script> -->
 
 </body>
 </html>
